@@ -1,5 +1,4 @@
 <div>
-    @if ($recentPosts->isNotEmpty())
         <div class="row gy-2">
             <h1>Recientes</h1>
             @foreach ($recentPosts as $post)
@@ -49,7 +48,7 @@
                 </div>
             @endforeach
         </div>
-    @endif
+    
     @if (isset($groupedPosts['Tareas']))
         <h1>Tareas</h1>
         <div class="row gy-2">
