@@ -4,13 +4,13 @@
             <h2>Ultimos agregados</h2>
             <div class="card border-0 shadow-sm mb-4 bg-card d-flex flex-row rounded">
                 <!-- Imagen a la izquierda -->
-                @if ($post->postImages->first())
+                {{-- @if ($post->postImages->first())
                     <img src="{{ $post->postImages->first()->image_path }}"
-                        class="card-img card-img-post object-fit-cover border rounded" alt="main">
-                @else
+                        class="card-img card-img-post object-fit-cover border rounded" alt="main"> --}}
+                {{-- @else --}}
                     <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwpdirecto.com%2Fwp-content%2Fuploads%2F2017%2F08%2Falt-de-una-imagen.png&f=1&nofb=1&ipt=74c144e403ebed513597b4108410bf4abd0dce8e07265d3d789ae12abb40d4b4"
                         class="card-img card-img-item object-fit-cover border rounded" alt="main">
-                @endif
+                {{-- @endif --}}
                 <!-- Cuerpo de la card -->
                 <div class="card-body d-flex flex-column justify-content-between">
                     <!-- Etiquetas -->
