@@ -6,14 +6,14 @@ use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home');
+    return view('blog.meca.index');
 })->name('home');
+
+Route::view('/meca/{slug}', 'blog.meca.show')->name('blog.meca.show');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
-
-Route::view('/meca/{slug}', 'blog.posts.meca')->name('blog.posts.meca');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

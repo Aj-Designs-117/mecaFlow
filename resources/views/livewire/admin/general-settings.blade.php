@@ -35,10 +35,6 @@
                         <flux:input wire:model="settings.web_url" :label="__('web')" type="text"
                             autocomplete="off" placeholder="Ingrese una web" />
                     </div>
-                    <div class="mb-4">
-                        <flux:input wire:model="settings.nav_links" :label="__('Links de nav (separado por coma)')"
-                            type="text"  autocomplete="off" placeholder="Ingrese los navs" />
-                    </div>
 
                     <div class="flex justify-end">
                         <flux:button type="submit" variant="primary" class="cursor-pointer hover:bg-green-200">💾

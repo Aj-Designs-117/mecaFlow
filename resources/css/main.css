@@ -7,21 +7,15 @@ body {
     font-size: 16px;
 }
 
-.wrapper-main {
-    background-color: #ed3237;
-    height: clamp(15rem, -9.446rem + 27.857vw, 15.625rem);
-    margin-top: 100px;
-}
-
 .container-wrapper {
-  max-width: 1200px;
-  margin: 0 auto; 
-  padding: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
 }
 
 .logo-brand {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     background-color: white;
     border-radius: 50%;
     overflow: hidden;
@@ -32,12 +26,11 @@ body {
 
 .bg-navbar {
     background-color: #ed3237;
-    border-bottom: 0.1rem solid #ffffff;
 }
 
 .navbar-brand img {
-    height: 80px;
-    width: 80px;
+    height: 60px;
+    width: 60px;
     object-fit: cover;
 }
 
@@ -70,62 +63,40 @@ body {
     transform: translateX(-50%) scaleX(1);
 }
 
-.blog-container-title {
-    position: absolute;
-    top: 200px;
-}
-
-.blog-title {
-    font-size: clamp(4rem, -9rem + 26.667vw, 15rem);
-    color: #1d1616;
-    font-weight: bold;
-    line-height: 1;
-}
-
-.blog-author {
-    font-size: clamp(1rem, 0.929rem + 0.19vw, 1.1rem);
-    color: #1d1616;
-}
-
 .nav-item-spacing {
     margin: 2rem;
 }
 
-.social-icons a {
-    position: relative;
-    display: inline-block;
-    padding-bottom: 5px;
+.nav-spacing {
+    margin-top: 100px;
+}
+
+.blog-title {
+    font-size: 20px;
+}
+
+.social-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: transparent;
     color: white;
+    border: 1px solid white;
+    transition: all 0.3s ease;
     text-decoration: none;
-    transition: color 0.3s ease;
 }
 
-.social-icons a::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%) scaleX(0);
-    transform-origin: center;
-    width: 100%;
-    height: 2px;
+.social-circle:hover {
     background-color: white;
-    transition: transform 0.3s ease;
-}
-
-.social-icons a:hover::after {
-    transform: translateX(-50%) scaleX(1);
-}
-
-.social-icons a:hover {
-    color: #fdf0e9;
+    color: #dc3545;
 }
 
 .wrapper-spacing {
-    margin-top: clamp(0rem, -7.143rem + 19.048vw, 10rem);
+    margin-top: 100;
 }
-
-.wrapper-spacing--2x{ margin-top: 150px }
 
 .bg-card {
     background-color: #f4f5f6;
@@ -139,37 +110,95 @@ input.form-control:focus {
     background-color: #ed3237;
 }
 
-.text-justify { text-align: justify; }
+.text-justify {
+    text-align: justify;
+}
+
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.category-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
+
+.author-info img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.card-img-main {
+    height: 500px;
+}
+
+.card-img-item {
+    height: 241px;
+}
+
+.card-img-post{
+    height: 250px;
+    width: 300px;
+}
 
 .category-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  cursor: pointer;
-}
-.category-item:hover {
-  background-color: #f3f4f6;
-  border-radius: 5px;
-}
-.category-icon {
-  font-size: 24px;
-  margin-right: 10px;
-  color: #ed3237;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-top: 5px;
+    cursor: pointer;
 }
 
-.scroll-categories{
+.category-item:hover {
+    background-color: #f3f4f6;
+    border-radius: 5px;
+}
+
+.category-icon {
+    font-size: 24px;
+    margin-right: 10px;
+    color: #ed3237;
+}
+
+.category-item.active {
+    background-color: #e9ecef;
+    font-weight: bold;
+}
+
+.category-scroll {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.scroll-categories {
     white-space: nowrap;
-    max-width: 100%; 
+    max-width: 100%;
     height: 60px;
 }
 
-.text-custom-underline{
+.text-custom-underline {
     position: relative;
     display: inline-block;
     text-decoration: none;
 }
 
-.text-custom-underline::after{
+.text-custom-underline::after {
     content: '';
     position: absolute;
     left: 0;

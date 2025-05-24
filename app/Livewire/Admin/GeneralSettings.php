@@ -38,7 +38,6 @@ class GeneralSettings extends Component
             'settings.facebook_url' => 'nullable|url',
             'settings.web_url' => 'nullable|url',
             'settings.instagram_url' => 'nullable|url',
-            'settings.nav_links' => 'required'
         ]);
 
         try {

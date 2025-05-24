@@ -15,52 +15,54 @@
 </head>
 
 <body>
-    <header class="navbar navbar-expand-lg navbar-light py-3 w-100 bg-navbar position-fixed top-0 z-3">
-        <div class="container">
-            <a class="navbar-brand bg-white logo-brand" href="/">
-                <img src="{{ asset('images/logo-meca-192x192.png') }}" alt="Logo" />
+   
+    <!-- Top Navbar -->
+    <header class="navbar navbar-dark bg-dark py-4 fixed-top">
+        <div class="container d-flex align-items-center">
+            <a href="{{ route('home') }}" class="d-flex align-items-center text-white text-decoration-none">
+                <img src="{{ asset('images/logo-meca-192x192.png') }}" alt="logo" class="me-2 logo-brand">
+                <div class="d-flex flex-column lh-sm">
+                    <span class="fs-4 fw-bold">{{ trim(setting('site_title')) ?: 'Blog' }}</span>
+                    <small class="text-white-50">Donde las ideas se convierten en máquinas</small>
+                </div>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        </div>
+    </header>
+
+    <!-- Bottom Navbar -->
+    <nav class="navbar navbar-expand-lg bg-navbar py-3 nav-spacing shadow-sm p-3">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    @php
-                        $links = setting('nav_links');
-                    @endphp
-                    @if (!empty($links))
-                        @foreach (explode(',', $links) as $item)
-                            @php
-                                [$text, $url] = array_pad(explode('|', $item), 2, null);
-                            @endphp
 
-                            @if ($text && $url)
-                                <li class="nav-item nav-item-spacing">
-                                    <a class="nav-link" href="{{ route($url) }}">{{ trim($text) }}</a>
-                                </li>
-                            @endif
-                        @endforeach
-                    @endif
+            <div class="collapse navbar-collapse justify-content-between" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('home') }}">INICIO</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">SOBRE NOSOTROS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">CONTACTO</a>
+                    </li>
                 </ul>
-                <div class="d-flex align-items-center gap-4 text-white social-icons">
-                    <a href="{{ setting('instagram_url') }}" target="_blank"><i
-                            class="fab fa-instagram fa-lg text-white"></i></a>
-                    <a href="{{ setting('facebook_url') }}" target="_blank"><i
-                            class="fab fa-facebook-f fa-lg text-white"></i></a>
-                    <a href="{{ setting('web_url') }}" target="_blank"><i
-                            class="fa-solid fa-globe fa-lg text-white"></i></a>
 
-                    {{-- @if (Route::has('login'))
-                    @auth
-                    <a href="{{ url('/dashboard') }}"><i class="fa-solid fa-gauge fa-lg text-white"></i></a>
-                    @else
-                    <a href="{{ route('login') }}"><i class="fa-solid fa-right-to-bracket fa-lg text-white"></i></a>
-                    @endauth
-                    @endif --}}
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{{ setting('instagram_url') }}" target="_blank" class="social-circle">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="{{ setting('facebook_url') }}" target="_blank" class="social-circle">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="{{ setting('web_url') }}" target="_blank" class="social-circle">
+                        <i class="fa-solid fa-globe"></i>
+                    </a>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <main>
         {{ $slot }}
@@ -103,7 +105,7 @@
                 </div>
 
                 <!-- Enlaces -->
-                <livewire:blog.category-index />
+                <livewire:blog.meca-category />
             </div>
 
             <!-- Línea inferior -->

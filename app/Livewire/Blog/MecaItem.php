@@ -6,13 +6,13 @@ use App\Models\Post;
 use Carbon\Carbon;
 use Livewire\Component;
 
-class MecaShow extends Component
+class MecaItem extends Component
 {
     public $post = '';
 
     public function render()
     {
-        return view('livewire.blog.meca-show');
+        return view('livewire.blog.meca-item');
     }
 
     public function mount($slug)
