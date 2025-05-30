@@ -10,7 +10,9 @@ class MecaPopular extends Component
 {
     public function render()
     {
-        $popularPosts = Post::with(['postImages', 'categories'])->where('created_at', '>=', Carbon::now()->subDays(7))
+        $popularPosts = Post::with(['postImages', 'categories'])
+            ->where('status', 'publicado')
+            ->where('created_at', '>=', Carbon::now()->subDays(7))
             ->orderByDesc('views')
             ->take(5)
             ->get();
