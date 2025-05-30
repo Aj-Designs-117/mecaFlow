@@ -1,4 +1,4 @@
-  <div class="card p-3 category-scroll">
+  <div class="card p-3">
       <h6 class="card-title fw-semibold text-muted mb-3">Categorias</h6>
 
       <!-- Botón "Todos" -->

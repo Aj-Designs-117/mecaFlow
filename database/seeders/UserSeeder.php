@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Alan Jafet',
-            'email' => 'admin@mecaflow.com',
+            'email' => 'alan@meca.com',
             'email_verified_at' => now(),
             'password' => bcrypt('231244'),
             'remember_token' => Str::random(10),

@@ -68,7 +68,7 @@
                     </flux:radio.group>
                 </div>
             </div>
-            <div class="relative mt-4">
+            {{-- <div class="relative mt-4">
                 <div class="mb-2">
                     <flux:textarea wire:model="imageUrlsText"
                         :label="__('Agregar URLs de imágenes (separadas por coma o salto de línea)')" autocomplete="off"
@@ -120,7 +120,7 @@
                         </div>
                     @endif
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <div class="mt-3">
