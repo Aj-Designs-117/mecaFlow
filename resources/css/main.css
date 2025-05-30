@@ -233,11 +233,11 @@ input.form-control:focus {
     font-weight: bold;
 }
 
-.category-scroll {
+/* .category-scroll {
     max-height: 300px;
     overflow-y: auto;
     padding-right: 5px;
-}
+} */
 
 .scroll-categories {
     white-space: nowrap;
