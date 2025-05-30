@@ -40,9 +40,13 @@ class MecaItem extends Component
 
         foreach ($this->post->postImages as $image) {
             $placeholder = '[image_' . $image->order . ']';
-            $imgTag = '<img src="' . e($image->image_path) . '" class="object-fit-cover rounded w-100 mb-3 mt-0" alt="post"  style="height: 500px;">';
 
-            // Reemplazar <p>[image_#]</p> completamente
+            $imgTag = '
+                    <div class="w-100 mb-3 mt-0 text-center" >
+                        <img src="' . e($image->image_path) . '" class="object-fit-cover rounded w-100 h-100" alt="post">
+                    </div>
+                ';
+
             $formattedBody = preg_replace(
                 '/<p>\s*' . preg_quote($placeholder, '/') . '\s*<\/p>/i',
                 $imgTag,
