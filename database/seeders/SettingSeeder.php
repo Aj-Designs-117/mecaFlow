@@ -15,7 +15,7 @@ class SettingSeeder extends Seeder
     {
         Setting::create([
             'key' => 'site_title',
-            'value' => 'MecaFlow',
+            'value' => 'MecaLink',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

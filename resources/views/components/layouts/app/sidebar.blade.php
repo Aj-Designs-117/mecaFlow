@@ -60,7 +60,7 @@
                     @endcan
                 </flux:navlist.group>
             @endcan
-            @can('admin.setting.index')
+            @can('admin.settings.index')
                 <flux:navlist.group :heading="__('Sitio web')" class="grid">
                     <flux:navlist.item icon="clipboard-document-list" :href="route('admin.settings.index')"
                         :current="request() - > routeIs('admin.settings.index')" wire:navigate>{{ __('Config. General') }}

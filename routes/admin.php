@@ -14,5 +14,5 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::view('/posts/create', 'admin.posts.create')->middleware('can:admin.posts.create')->name('admin.posts.create');
     Route::view('/post/edit/{slug}', 'admin.posts.edit')->middleware('can:admin.posts.edit')->name('admin.posts.edit');
     Route::view('/categories/create', 'admin.categories.index')->middleware('can:admin.categories.index')->name('admin.categories.index');
-    Route::view('/settings/web', 'admin.settings.index')->middleware('can:admin.setting.index')->name('admin.settings.index');
+    Route::view('/settings/web', 'admin.settings.index')->middleware('can:admin.settings.index')->name('admin.settings.index');
 });
