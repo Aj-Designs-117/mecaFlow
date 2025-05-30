@@ -11,7 +11,7 @@ class MecaRecent extends Component
     public function render()
     {
         $posts = Post::with(['user', 'categories', 'postImages'])
-            ->where('status', 'publicado')
+            ->where('status', 'Publicado')
             ->where('created_at', '>=', Carbon::now()->subMonths(6))
             ->latest()
             ->take(3)

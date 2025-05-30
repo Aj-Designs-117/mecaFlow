@@ -20,7 +20,7 @@ class MecaIndex extends Component
         $categories = Category::all();
 
         $posts = Post::with(['user', 'categories', 'postImages'])
-            ->where('status', 'publicado')
+            ->where('status', 'Publicado')
             ->when($this->meca, function ($query) {
                 $query->whereHas('categories', function ($catQuery) {
                     $catQuery->where('slug', $this->meca);
