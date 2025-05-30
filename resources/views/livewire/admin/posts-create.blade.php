@@ -12,6 +12,10 @@
                             placeholder="Ingrese el slug" />
                     </div>
                     <div class="mt-4">
+                        <flux:textarea wire:model="excerpt" :label="__('Extracto')"
+                            placeholder="Escriba un pequeño fragmeto del contenido" />
+                    </div>
+                    <div class="mt-4">
                         <flux:input wire:model.defer="partners" :label="__('Colaboradores')" type="text"
                             autocomplete="off" placeholder="Ingrese los colaboradores" />
                     </div>
@@ -36,8 +40,8 @@
                                 @foreach ($categories as $category)
                                     <label
                                         class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                                        <input type="checkbox" wire:model="selectedCategories" value="{{ $category->id }}"
-                                            class="form-checkbox mr-2 category-checkbox">
+                                        <input type="checkbox" wire:model="selectedCategories"
+                                            value="{{ $category->id }}" class="form-checkbox mr-2 category-checkbox">
                                         {{ $category->name }}
                                     </label>
                                 @endforeach
@@ -64,7 +68,12 @@
                         </flux:radio.group>
                     </div>
                 </div>
-                <div class="relative mt-4">
+                <div class="mt-4">
+                    <div class="mb-2">
+                        <flux:textarea wire:model="imageUrlsText"
+                            :label="__('Agregar URLs de imágenes (separadas por coma o salto de línea)')" autocomplete="off"
+                            placeholder="https://ejemplo.com/imagen1.jpg, https://ejemplo.com/imagen2.png" />
+                    </div>
                     <!-- Subida de archivos -->
                     <div
                         class="relative bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 min-h-64 flex items-center justify-center">
@@ -126,8 +135,9 @@
             <flux:textarea wire:model="body" id="body" class="hidden" />
             @error('body')
                 <div class="mt-3 text-sm font-medium text-red-500 dark:text-red-400">
-                    <svg class="shrink-0 [:where(&amp;)]:size-5 inline" data-flux-icon="" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5 inline" data-flux-icon=""
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
+                        data-slot="icon">
                         <path fill-rule="evenodd"
                             d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
                             clip-rule="evenodd"></path>

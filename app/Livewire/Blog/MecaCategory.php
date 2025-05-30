@@ -7,7 +7,6 @@ use Livewire\Component;
 
 class MecaCategory extends Component
 {
-
     public function render()
     {
         $categories = Category::take(7)->get();

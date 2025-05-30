@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 use Flux\Flux;
 
@@ -15,6 +16,8 @@ class CategoriesIndex extends Component
     use WithPagination;
     
     public $id, $search = '', $sort = 'id', $direction = 'desc', $name = '', $slug = '';
+
+    protected $listeners = ['categoryCreated' => '$refresh'];
 
     public function render()
     {   
@@ -57,7 +60,7 @@ class CategoriesIndex extends Component
                 'id' => $category->id,
                 'title' => $category->name,
                 'slug' => $category->slug,
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
@@ -69,7 +72,7 @@ class CategoriesIndex extends Component
             Log::warning('Intento de actualizar un categoria inexistente', [
                 'requested_by' => $id,
                 'error' => $e->getMessage(),
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
@@ -84,7 +87,7 @@ class CategoriesIndex extends Component
                     'name' => $this->name,
                     'slug' => $this->slug,
                 ],
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
@@ -107,7 +110,7 @@ class CategoriesIndex extends Component
             Log::info('Usuario eliminado exitosamente', [
                 'deleted_category_id' => $id,
                 'deleted_category_name' => $categoryName,
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
             
@@ -118,7 +121,7 @@ class CategoriesIndex extends Component
             Log::error('Categoria no encontrada al intentar eliminar', [
                 'requested_id' => $id,
                 'error' => $e->getMessage(),
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
@@ -129,7 +132,7 @@ class CategoriesIndex extends Component
             Log::error('Error al eliminar la categoria', [
                 'category_id'  => $id,
                 'error' => $e->getMessage(),
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 

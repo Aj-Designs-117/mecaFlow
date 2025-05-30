@@ -16,9 +16,11 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Autor del post
             $table->string('title');
             $table->string('slug')->unique();
+            $table->text('excerpt')->nullable(); 
             $table->longText('body');
             $table->json('partners')->nullable();
             $table->enum('status', ['Borrador', 'Publicado'])->default('Borrador');
+            $table->unsignedBigInteger('views')->default(0);
             $table->timestamps();
         });
     }

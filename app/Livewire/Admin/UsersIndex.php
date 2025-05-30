@@ -6,6 +6,7 @@ use Livewire\Component;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Flux\Flux;
 use Livewire\WithPagination;
 
@@ -15,10 +16,8 @@ class UsersIndex extends Component
 {
     use WithPagination;
 
-    public $search = '';
-    public $sort = 'id';
-    public $direction = 'desc';
-    public $id, $name, $email, $password,  $selectedRoles = [];
+    public $id, $name, $email, $password,  $selectedRoles = [], $direction = 'desc', $sort = 'id', $search = '';
+    protected $listeners = ['UserCreated' => '$refresh'];
 
     public function render()
     {
@@ -72,7 +71,7 @@ class UsersIndex extends Component
                 'user_id' => $user->id,
                 'name' => $user->name,
                 'updated_fields' => ['name', 'email', 'password'],
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
@@ -83,7 +82,7 @@ class UsersIndex extends Component
             Log::warning('Intento de actualizar un usuario inexistente', [
                 'requested_by' => $id,
                 'error' => $e->getMessage(),
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
@@ -96,7 +95,7 @@ class UsersIndex extends Component
                     'name' => $this->name,
                     'email' => $this->email,
                 ],
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
@@ -115,7 +114,7 @@ class UsersIndex extends Component
             Log::info('Se asigno un rol exitosamente', [
                 'user_id' => $user->id,
                 'name' => $user->name,
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
@@ -128,7 +127,7 @@ class UsersIndex extends Component
                     'name' => $this->name,
                     'email' => $this->email,
                 ],
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
             $this->dispatch('error', ['message' => 'Algo va mal al asignar los roles']);
@@ -145,7 +144,7 @@ class UsersIndex extends Component
             Log::info('Usuario eliminado exitosamente', [
                 'deleted_user_id' => $id,
                 'deleted_user_name' => $userName,
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
             $this->dispatch('success', ['message' => 'Se ha eliminado correctamente']);
@@ -153,7 +152,7 @@ class UsersIndex extends Component
             Log::error('Usuario no encontrado al intentar eliminar', [
                 'requested_id' => $id,
                 'error' => $e->getMessage(),
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
             $this->dispatch('error', ['message' => 'El usuario no existe']);
@@ -161,7 +160,7 @@ class UsersIndex extends Component
             Log::error('Error al eliminar al usuario', [
                 'user_id'  => $id,
                 'error' => $e->getMessage(),
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
             $this->dispatch('error', ['message' => 'Algo va mal al eliminar al usuario']);

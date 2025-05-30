@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class CategoriesCreate extends Component
 {
@@ -44,11 +45,12 @@ class CategoriesCreate extends Component
                 'id' => $category->id,
                 'title' => $category->name,
                 'slug' => $category->slug,
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
             $this->resetFieldsView();
+            $this->dispatch('categoryCreated');
             $this->dispatch('success', ['message' => 'Se ha guardado correctamente']);
         }catch(\Exception $e){
             DB::rollBack();
@@ -59,7 +61,7 @@ class CategoriesCreate extends Component
                     'name' => $this->name,
                     'slug' => $this->slug,
                 ],
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
             $this->resetFieldsView();

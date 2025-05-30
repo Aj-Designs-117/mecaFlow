@@ -11,11 +11,13 @@
         integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    
     @vite(['resources/css/main.css'])
 </head>
 
 <body>
-   
     <!-- Top Navbar -->
     <header class="navbar navbar-dark bg-dark py-4 fixed-top">
         <div class="container d-flex align-items-center">
@@ -64,9 +66,9 @@
         </div>
     </nav>
 
-    <main>
+    <section>
         {{ $slot }}
-    </main>
+    </section>
 
     <footer class="bg-footer p-5 position-relative text-light">
         <div class="container">
@@ -105,7 +107,21 @@
                 </div>
 
                 <!-- Enlaces -->
-                <livewire:blog.meca-category />
+                <div class="col-md-4 mb-4 text-center">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="{{ route('home') }}" class="text-decoration-none text-light">Inicio</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="text-white text-decoration-none">Sobre Nosotros</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="text-white text-decoration-none">Contacto</a>
+                        </li>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
 
             <!-- Línea inferior -->

@@ -7,12 +7,13 @@ use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 
 class PostsEdit extends Component
 {
-    public $postId, $title = '', $slug = '', $body = '', $partners = '', $status, $selectedCategories = [], $images = [];
+    public $postId, $title = '', $slug = '', $excerpt = '', $body = '', $partners = '', $status, $selectedCategories = [], $images = [];
 
     public function render()
     {
@@ -24,7 +25,7 @@ class PostsEdit extends Component
     {
         $post = Post::where('slug', $slug)
             ->with('categories', 'postImages')
-            ->select('id', 'title', 'slug', 'partners', 'body', 'status')
+            ->select('id', 'title', 'slug', 'excerpt', 'partners', 'body', 'status')
             ->firstOrFail();
 
         $user = auth()->user();
@@ -36,11 +37,11 @@ class PostsEdit extends Component
         $this->postId = $post->id;
         $this->title = $post->title;
         $this->slug = $post->slug;
+        $this->excerpt = $post->excerpt;
         $this->partners = is_array($post->partners) ? implode(', ', $post->partners) : $post->partners;
         $this->body = $post->body;
         $this->status = $post->status;
         $this->selectedCategories = $post->categories->pluck('id')->toArray();
-        $this->images = $post->postImages->pluck('image_path')->toArray();
     }
 
     public function clearImages()
@@ -63,6 +64,7 @@ class PostsEdit extends Component
             $this->validate([
                 'title' => 'required|string|max:255',
                 'slug' => 'required|string|max:255|unique:posts,slug,' . $this->postId,
+                'excerpt' => 'nullable|string|max:255',
                 'partners' => 'nullable|string|max:1000',
                 'body' => 'required|string',
                 'status' => 'required|string',
@@ -76,6 +78,7 @@ class PostsEdit extends Component
             $post->update([
                 'title' => $this->title,
                 'slug' => $slugForValidation,
+                'excerpt' => $this->excerpt,
                 'partners' => array_filter(array_map('trim', explode(',', $this->partners))),
                 'body' => $this->body,
                 'status' => $this->status,
@@ -88,25 +91,25 @@ class PostsEdit extends Component
                 'id' => $post->id,
                 'title' => $post->title,
                 'images' => count($this->images ?? []),
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
             $this->dispatch('success', ['message' => 'Se ha actualizado correctamente']);
             $this->dispatch('quillClear');
             return redirect()->route('admin.posts.index');
-        }catch (AuthorizationException $authEx) {
+        } catch (AuthorizationException $authEx) {
             DB::rollBack();
 
             Log::warning('Intento de actualización sin permiso', [
                 'error' => $authEx->getMessage(),
                 'post_id' => $this->postId,
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
             $this->dispatch('error', ['message' => 'Intento actualizar sin permiso']);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
 
             Log::error('Error al crear post', [
@@ -115,11 +118,10 @@ class PostsEdit extends Component
                     'title' => $this->title,
                     'slug' => $this->slug,
                     'partners' => $this->partners,
-                    'body' =>  $this->body,
                     'images' => count($this->images ?? []),
                     'status' => $this->status,
                 ],
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
             $this->dispatch('error', ['message' => 'Algo va mal al actualizar un nuevo post']);

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $fillable = ['user_id', 'title', 'slug', 'body', 'partners', 'status'];
+    protected $fillable = ['user_id', 'title', 'slug', 'excerpt' ,'body', 'partners', 'status'];
     protected $casts = [
         'partners' => 'array', 
     ];

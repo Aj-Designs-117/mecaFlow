@@ -18,7 +18,7 @@ class PostsCreate extends Component
 {
     use WithFileUploads;
 
-    public $title = '', $slug = '', $body = '', $partners = '', $status = '', $images = [], $selectedCategories = [];
+    public $title = '', $slug = '', $excerpt = '', $body = '', $partners = '', $status = '', $images = [], $imageUrls = [], $imageUrlsText = '' , $selectedCategories = [];
 
     public function render()
     {
@@ -35,27 +35,46 @@ class PostsCreate extends Component
     {
         $this->title = '';
         $this->slug = '';
+        $this->excerpt = '';
         $this->body = '';
         $this->partners = '';
         $this->images = [];
+        $this->imageUrlsText = '';
         $this->selectedCategories = [];
+    }
+
+    public function updatedImageUrlsText()
+    {
+        $urls = preg_split('/\r\n|\r|\n|,/', $this->imageUrlsText);
+        $this->imageUrls = array_filter(array_map('trim', $urls));
     }
 
     public function store()
     {
         $slugForValidation = Str::slug($this->slug);
 
+
         $this->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:posts,slug',
+            'excerpt' => 'nullable|string|max:255',
             'body' => 'required|string',
             'partners' => 'nullable|string|max:1000',
             'status' => 'required|string',
+
             'images' => 'nullable|array',
             'images.*' => 'nullable|image|mimes:jpeg,png|max:2048',
+
+            'imageUrls' => 'nullable|array',
+            'imageUrls.*' => 'string|url',
+            
             'selectedCategories' => 'array|min:1',
             'selectedCategories.*' => 'exists:categories,id',
         ]);
+
+        if (is_string($this->imageUrls)) {
+            $this->imageUrls = array_filter(array_map('trim', explode(',', $this->imageUrls)));
+        }
 
         try {
 
@@ -65,14 +84,13 @@ class PostsCreate extends Component
                 'user_id' => Auth::id(),
                 'title' => $this->title,
                 'slug' => $slugForValidation,
+                'excerpt' => $this->excerpt,
                 'body' => $this->body,
                 'partners' => array_filter(array_map('trim', explode(',', $this->partners))),
                 'status' => $this->status,
             ]);
 
             $post->categories()->sync($this->selectedCategories ?? []);
-
-
 
             if ($post) {
                 foreach ($this->images as $index => $image) {
@@ -85,7 +103,16 @@ class PostsCreate extends Component
                         'order' => $index + 1,
                     ]);
                 }
+
+                foreach ($this->imageUrls as $index => $url) {
+                    PostImage::create([
+                        'post_id' => $post->id,
+                        'image_path' => $url,
+                        'order' => count($this->images) + $index + 1,
+                    ]);
+                }
             }
+
 
             DB::commit();
 
@@ -93,7 +120,7 @@ class PostsCreate extends Component
                 'id' => $post->id,
                 'title' => $post->title,
                 'images' => count($this->images ?? []),
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
@@ -113,7 +140,7 @@ class PostsCreate extends Component
                     'images' => count($this->images ?? []),
                     'status' => $this->status,
                 ],
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 

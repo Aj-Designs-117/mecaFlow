@@ -14,56 +14,92 @@
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const quill = new Quill('#editor', {
-                    theme: 'snow',
-                    placeholder: 'Escribe el contenido aquí...'
-                });
+            (() => {
+                // Guardamos la instancia para poder destruirla y evitar conflictos
+                let quillInstance = null;
 
-                Livewire.on('quillClear', function() {
-                    quill.setText('');
-                    textarea.value = '';
-                    textarea.dispatchEvent(new Event('input'));
-                });
+                function initQuillAndDropdown() {
+                    if (quillInstance) {
+                        quillInstance = null;
+                    }
 
-                const textarea = document.querySelector('#body');
+                    const editor = document.querySelector('#editor');
+                    const textarea = document.querySelector('#body');
 
-                quill.on('text-change', function() {
-                    let html = quill.root.innerHTML;
-                    textarea.value = html;
-                    textarea.dispatchEvent(new Event('input'));
-                });
+                    if (!editor || !textarea) return;
 
-                const dropdownButton = document.getElementById("dropdownButton");
-                const dropdownMenu = document.getElementById("dropdownMenu");
-                const label = document.getElementById("dropdownLabel");
+                    quillInstance = new Quill(editor, {
+                        theme: 'snow',
+                        placeholder: 'Escribe el contenido aquí...',
+                    });
 
-                dropdownButton.addEventListener("click", function() {
-                    dropdownMenu.classList.toggle("hidden");
-                });
+                    quillInstance.on('text-change', () => {
+                        const editor = document.querySelector('.ql-editor');
+                        editor.querySelectorAll('p').forEach(p => {
+                            if (p.innerHTML.trim() === '<br>' && p !== editor.lastChild) {
+                                p.remove(); // evita dejar <p> vacíos en medio del contenido
+                            }
+                        });
 
-                const checkboxes = document.querySelectorAll(".category-checkbox");
-                checkboxes.forEach((checkbox) => {
-                    checkbox.addEventListener("change", updateLabel);
-                });
+                        const cleanedHtml = quillInstance.root.innerHTML.replace(/<br\s*\/?>/g, '');
+                        textarea.value = cleanedHtml;
+                        textarea.dispatchEvent(new Event('input'));
+                    });
 
-                function updateLabel() {
-                    const selected = Array.from(checkboxes)
-                        .filter(i => i.checked)
-                        .map(i => i.parentNode.textContent.trim());
+                    Livewire.on('quillClear', () => {
+                        if (quillInstance) {
+                            quillInstance.setText('');
+                            textarea.value = '';
+                            textarea.dispatchEvent(new Event('input'));
+                        }
+                    });
 
-                    label.textContent = selected.length ?
-                        selected.join(', ') :
-                        "Seleccione categorías...";
+                    const dropdownButton = document.getElementById("dropdownButton");
+                    const dropdownMenu = document.getElementById("dropdownMenu");
+                    const label = document.getElementById("dropdownLabel");
+
+                    if (!dropdownButton || !dropdownMenu || !label) return;
+
+                    dropdownButton.replaceWith(dropdownButton.cloneNode(true));
+                    const newDropdownButton = document.getElementById("dropdownButton");
+                    newDropdownButton.addEventListener("click", () => {
+                        dropdownMenu.classList.toggle("hidden");
+                    });
+
+                    const oldCheckboxes = document.querySelectorAll(".category-checkbox");
+                    oldCheckboxes.forEach(cb => {
+                        cb.replaceWith(cb.cloneNode(true));
+                    });
+
+                    const checkboxes = document.querySelectorAll(".category-checkbox");
+                    checkboxes.forEach(checkbox => {
+                        checkbox.addEventListener("change", updateLabel);
+                    });
+
+                    function updateLabel() {
+                        const selected = Array.from(document.querySelectorAll(".category-checkbox"))
+                            .filter(i => i.checked)
+                            .map(i => i.parentNode.textContent.trim());
+
+                        label.textContent = selected.length ? selected.join(', ') : "Seleccione categorías...";
+                    }
+
+                    document.addEventListener("click", (event) => {
+                        const component = document.getElementById("multiselect-component");
+                        if (component && !component.contains(event.target)) {
+                            dropdownMenu.classList.add("hidden");
+                        }
+                    });
                 }
 
-                document.addEventListener("click", function(event) {
-                    if (!document.getElementById("multiselect-component").contains(event.target)) {
-                        dropdownMenu.classList.add("hidden");
-                    }
+                document.addEventListener('livewire:initialized', () => {
+                    initQuillAndDropdown();
+
+                    Livewire.hook('component.init', () => {
+                        initQuillAndDropdown();
+                    });
                 });
-            });
+            })();
         </script>
-       
     @endpush
 </x-layouts.app>

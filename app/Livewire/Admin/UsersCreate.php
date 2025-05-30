@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class UsersCreate extends Component
@@ -42,11 +43,12 @@ class UsersCreate extends Component
             Log::info('Usuario creado exitosamente', [
                 'id' => $user->id,
                 'name' => $user->name,
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
 
             $this->resetFieldsView();
+            $this->dispatch('UserCreated');
             $this->dispatch('success', ['message' => 'Se ha guardado correctamente']);
         } catch (\Exception $e) {
             Log::error('Error al crear usuario', [
@@ -55,7 +57,7 @@ class UsersCreate extends Component
                     'name' => $this->name,
                     'email' => $this->email,
                 ],
-                'modified_by' => auth()->id(),
+                'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
             $this->resetFieldsView();

@@ -16,10 +16,11 @@
                         class="card-img card-img-main object-fit-cover border rounded" alt="main">
                 @endif
                 <div class="card-overlay">
-                    @foreach ($mainPost->categories as $category)
-                        <span class="badge bg-danger category-badge">{ {{ $category->name }} }</span>
-                    @endforeach
-
+                    <div class="position-absolute top-0 start-0 m-3 d-flex flex-wrap gap-2">
+                        @foreach ($mainPost->categories as $category)
+                            <span class="badge bg-danger">{ {{ $category->name }} }</span>
+                        @endforeach
+                    </div>
                     <h4 class="card-title fw-bold">
                         <a href="{{ route('blog.meca.show', $mainPost->slug) }}"
                             class="card-title link-offset-2 link-underline link-underline-opacity-0 text-custom-underline m-0 p-0">
@@ -52,9 +53,11 @@
                                 class="card-img card-img-item object-fit-cover border rounded" alt="main">
                         @endif
                         <div class="card-overlay">
-                            @foreach ($post->categories as $category)
-                                <span class="badge bg-danger category-badge">{ {{ $category->name }} }</span>
-                            @endforeach
+                            <div class="position-absolute top-0 start-0 m-3 d-flex flex-wrap gap-2">
+                                @foreach ($mainPost->categories as $category)
+                                    <span class="badge bg-danger">{ {{ $category->name }} }</span>
+                                @endforeach
+                            </div>
                             <h6 class="card-title fw-bold">
                                 <a href="{{ route('blog.meca.show', $post->slug) }}"
                                     class="card-title link-offset-2 link-underline link-underline-opacity-0 text-custom-underline m-0 p-0">
