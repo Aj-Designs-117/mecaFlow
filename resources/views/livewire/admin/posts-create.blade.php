@@ -75,8 +75,7 @@
                             placeholder="https://ejemplo.com/imagen1.jpg, https://ejemplo.com/imagen2.png" />
                     </div>
                     <!-- Subida de archivos -->
-                    <div
-                        class="relative bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 min-h-64 flex items-center justify-center">
+                    <div class="relative bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 min-h-64 flex items-center justify-center">
 
                         <!-- Imagen principal -->
                         @if ($images && count($images) > 0)

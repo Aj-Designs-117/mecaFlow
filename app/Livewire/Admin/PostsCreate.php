@@ -18,7 +18,7 @@ class PostsCreate extends Component
 {
     use WithFileUploads;
 
-    public $title = '', $slug = '', $excerpt = '', $body = '', $partners = '', $status = '', $images = [], $imageUrls = [], $imageUrlsText = '' , $selectedCategories = [];
+    public $title = '', $slug = '', $excerpt = '', $body = '', $partners = '', $status = '', $images = [], $imageUrls = [], $imageUrlsText = '', $selectedCategories = [];
 
     public function render()
     {
@@ -67,7 +67,7 @@ class PostsCreate extends Component
 
             'imageUrls' => 'nullable|array',
             'imageUrls.*' => 'string|url',
-            
+
             'selectedCategories' => 'array|min:1',
             'selectedCategories.*' => 'exists:categories,id',
         ]);
@@ -92,8 +92,8 @@ class PostsCreate extends Component
 
             $post->categories()->sync($this->selectedCategories ?? []);
 
-            if ($post) {
-                foreach ($this->images as $index => $image) {
+            foreach ($this->images as $index => $image) {
+                try {
                     $path = $image->store('posts', 'cloudinary');
                     $uploadedFileUrl = Storage::disk('cloudinary')->url($path);
 
@@ -102,17 +102,19 @@ class PostsCreate extends Component
                         'image_path' => $uploadedFileUrl,
                         'order' => $index + 1,
                     ]);
-                }
-
-                foreach ($this->imageUrls as $index => $url) {
-                    PostImage::create([
-                        'post_id' => $post->id,
-                        'image_path' => $url,
-                        'order' => count($this->images) + $index + 1,
-                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Error subiendo imagen', ['error' => $e->getMessage()]);
+                    $this->dispatch('success', ['message' => 'Error en la subida de imagen']);
                 }
             }
 
+            foreach ($this->imageUrls as $index => $url) {
+                PostImage::create([
+                    'post_id' => $post->id,
+                    'image_path' => $url,
+                    'order' => count($this->images) + $index + 1,
+                ]);
+            }
 
             DB::commit();
 
