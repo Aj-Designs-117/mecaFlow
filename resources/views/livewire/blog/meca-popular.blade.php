@@ -18,7 +18,7 @@
                                 <div class="text-primary fw-semibold small mb-1 me-1">{ {{ $category->name }} }</div>
                             @endforeach
                         </div>
-                        <div class="text-truncate fw-bold">{{ Str::limit($post->title, 30, '...') }}</div>
+                        <div class="fw-bold">{{ Str::limit($post->title, 30, '...') }}</div>
                     </div>
                 </div>
             </a>

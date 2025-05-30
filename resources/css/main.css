@@ -191,8 +191,13 @@ input.form-control:focus {
 }
 
 .card-img-post {
-    height: 250px;
-    width: 300px;
+    width: 100%;
+    height: auto;
+}
+
+.card-img-avatar{
+    width: 30px;
+    height: 30px;
 }
 
 .card-popular-img {
@@ -264,4 +269,11 @@ input.form-control:focus {
 
 .text-custom-underline:hover::after {
     width: 100%;
+}
+
+@media (min-width: 768px) {
+    .card-img-post {
+        width: 200px;
+        height: 200px;
+    }
 }

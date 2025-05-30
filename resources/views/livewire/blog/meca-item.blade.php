@@ -16,6 +16,8 @@
             {!! $post->formatted_body !!}
         </div>
 
+        <hr class="border-top border-secondary my-4">
+
         <div class="d-flex flex-wrap gap-2 mb-3">
             @foreach ($post->categories as $category)
                 <h4 class="text-primary fw-semibold">{ {{ $category->name }} }</h4>
