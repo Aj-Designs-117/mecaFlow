@@ -54,7 +54,7 @@
                         @endif
                         <div class="card-overlay">
                             <div class="position-absolute top-0 start-0 m-3 d-flex flex-wrap gap-2">
-                                @foreach ($mainPost->categories as $category)
+                                @foreach ($post->categories as $category)
                                     <span class="badge bg-danger">{ {{ $category->name }} }</span>
                                 @endforeach
                             </div>
