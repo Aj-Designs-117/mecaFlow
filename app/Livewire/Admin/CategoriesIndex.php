@@ -14,18 +14,18 @@ use Flux\Flux;
 class CategoriesIndex extends Component
 {
     use WithPagination;
-    
+
     public $id, $search = '', $sort = 'id', $direction = 'desc', $name = '', $slug = '';
 
     protected $listeners = ['categoryCreated' => '$refresh'];
 
     public function render()
-    {   
+    {
         $categories = Category::where(function ($query) {
             $query->where('name', 'like', '%' . $this->search . '%');
         })
-        ->orderBy($this->sort, $this->direction)
-        ->paginate(10);
+            ->orderBy($this->sort, $this->direction)
+            ->paginate(10);
 
         return view('livewire.admin.categories-index', compact('categories'));
     }
@@ -38,8 +38,9 @@ class CategoriesIndex extends Component
         $this->slug = $category->slug;
     }
 
-    public function update($id){
-        try{
+    public function update($id)
+    {
+        try {
             $this->validate([
                 'name' => 'required|string|max:255|unique:categories,name,' . $id,
                 'slug' => 'required|string|max:255|unique:categories,slug,' . $id
@@ -66,7 +67,7 @@ class CategoriesIndex extends Component
 
             Flux::modals()->close();
             $this->dispatch('success', ['message' => 'Se ha actualizado correctamente']);
-        }catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             DB::rollBack();
 
             Log::warning('Intento de actualizar un categoria inexistente', [
@@ -77,7 +78,7 @@ class CategoriesIndex extends Component
             ]);
 
             $this->dispatch('error', ['message' => 'La categoria especificada no existe']);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
 
             Log::error('Error al actualizar la categoria', [
@@ -102,8 +103,13 @@ class CategoriesIndex extends Component
             DB::beginTransaction();
 
             $category = Category::findOrFail($id);
+            
+            if ($category->posts()->count() > 0) {
+                $this->dispatch('error', ['message' => 'No puedes eliminar una categoría que está asignada a uno o más posts.']);
+            }
+
             $categoryName =  $category->name;
-            $category->delete(); 
+            $category->delete();
 
             DB::commit();
 
@@ -113,9 +119,9 @@ class CategoriesIndex extends Component
                 'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
-            
+
             $this->dispatch('success', ['message' => 'Se ha eliminado correctamente']);
-        }catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             DB::rollBack();
 
             Log::error('Categoria no encontrada al intentar eliminar', [
@@ -126,7 +132,7 @@ class CategoriesIndex extends Component
             ]);
 
             $this->dispatch('error', ['message' => 'La categoria no existe']);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
 
             Log::error('Error al eliminar la categoria', [
