@@ -164,14 +164,18 @@ input.form-control:focus {
     bottom: 0;
     right: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.4);
-    color: white;
-    padding: 1rem;
+    
+    background: linear-gradient(to top, #000, #0003);
     border-radius: 10px;
+
+    padding: 1rem;
+    color: white;
     display: flex;
     flex-direction: column;
     justify-content: end;
 }
+
+
 
 .hover-card {
     transition: background-color 0.3s ease

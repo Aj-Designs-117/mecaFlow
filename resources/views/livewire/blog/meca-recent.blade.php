@@ -7,13 +7,13 @@
     @if ($mainPost)
         <!-- Main Card -->
         <div class="col-md-8">
-            <div class="card bg-dark text-white border-0 position-relative">
+            <div class="card text-white border-0 position-relative">
                 @if ($mainPost->postImages->first())
                     <img src="{{ $mainPost->postImages->first()->image_path }}"
-                        class="card-img card-img-main object-fit-cover border rounded" alt="main">
+                        class="card-img-main object-fit-cover border rounded" alt="main">
                 @else
                     <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwpdirecto.com%2Fwp-content%2Fuploads%2F2017%2F08%2Falt-de-una-imagen.png&f=1&nofb=1&ipt=74c144e403ebed513597b4108410bf4abd0dce8e07265d3d789ae12abb40d4b4"
-                        class="card-img card-img-main object-fit-cover border rounded" alt="main">
+                        class="card-img-main object-fit-cover border rounded" alt="main">
                 @endif
                 <div class="card-overlay">
                     <div class="position-absolute top-0 start-0 m-3 d-flex flex-wrap gap-2">
@@ -44,10 +44,10 @@
             @foreach ($otherPosts as $post)
                 <!-- Card 1 -->
                 <div class="col-md-12">
-                    <div class="card bg-dark text-white border-0 position-relative">
+                    <div class="card text-white border-0 position-relative">
                         @if ($post->postImages->first())
                             <img src="{{ $post->postImages->first()->image_path }}"
-                                class="card-img card-img-item object-fit-cover border rounded" alt="main">
+                                class="card-img-item object-fit-cover border rounded" alt="main">
                         @else
                             <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwpdirecto.com%2Fwp-content%2Fuploads%2F2017%2F08%2Falt-de-una-imagen.png&f=1&nofb=1&ipt=74c144e403ebed513597b4108410bf4abd0dce8e07265d3d789ae12abb40d4b4"
                                 class="card-img card-img-item object-fit-cover border rounded" alt="main">
