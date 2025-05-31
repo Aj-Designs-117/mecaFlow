@@ -68,12 +68,13 @@
                     </flux:radio.group>
                 </div>
             </div>
+            <div class="mb-2">
+                <flux:textarea wire:model="imageUrlsText"
+                    :label="__('Agregar URLs de imágenes (separadas por coma o salto de línea)')" autocomplete="off"
+                    placeholder="https://ejemplo.com/imagen1.jpg, https://ejemplo.com/imagen2.png" />
+            </div>
+
             {{-- <div class="relative mt-4">
-                <div class="mb-2">
-                    <flux:textarea wire:model="imageUrlsText"
-                        :label="__('Agregar URLs de imágenes (separadas por coma o salto de línea)')" autocomplete="off"
-                        placeholder="https://ejemplo.com/imagen1.jpg, https://ejemplo.com/imagen2.png" />
-                </div>
 
                 <!-- Subida de archivos -->
                 <div
@@ -121,6 +122,7 @@
                     @endif
                 </div>
             </div> --}}
+
         </div>
 
         <div class="mt-3">
@@ -158,18 +160,46 @@
             placeholder: 'Escribe el contenido aquí...',
             modules: {
                 toolbar: [
-                [{ 'font': [] }],
-                [{ 'size': ['small', false, 'large', 'huge'] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ 'color': [] }, { 'background': [] }],
-                [{ 'script': 'sub'}, { 'script': 'super' }],
-                [{ 'header': 1 }, { 'header': 2 }],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'indent': '-1'}, { 'indent': '+1' }],
-                [{ 'direction': 'rtl' }],
-                [{ 'align': [] }],
-                ['link', 'image', 'video'],
-                ['clean']
+                    [{
+                        'font': []
+                    }],
+                    [{
+                        'size': ['small', false, 'large', 'huge']
+                    }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{
+                        'color': []
+                    }, {
+                        'background': []
+                    }],
+                    [{
+                        'script': 'sub'
+                    }, {
+                        'script': 'super'
+                    }],
+                    [{
+                        'header': 1
+                    }, {
+                        'header': 2
+                    }],
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }],
+                    [{
+                        'indent': '-1'
+                    }, {
+                        'indent': '+1'
+                    }],
+                    [{
+                        'direction': 'rtl'
+                    }],
+                    [{
+                        'align': []
+                    }],
+                    ['link', 'image', 'video'],
+                    ['clean']
                 ]
             },
         });

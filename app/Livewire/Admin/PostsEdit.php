@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class PostsEdit extends Component
 {
-    public $postId, $title = '', $slug = '', $excerpt = '', $body = '', $partners = '', $status, $selectedCategories = [], $images = [];
+    public $postId, $title = '', $slug = '', $excerpt = '', $body = '', $partners = '', $status, $selectedCategories = [], $images = [], $imageUrlsText = '';
 
     public function render()
     {
@@ -30,7 +30,7 @@ class PostsEdit extends Component
 
         $user = auth()->user();
 
-        if (! $user->hasRole('Administrador')) {
+        if (! $user->hasAnyRole(['Administrador', 'Editor'])) {
             abort(403, 'No tienes permiso para editar este post.');
         }
 
@@ -42,6 +42,7 @@ class PostsEdit extends Component
         $this->body = $post->body;
         $this->status = $post->status;
         $this->selectedCategories = $post->categories->pluck('id')->toArray();
+        $this->imageUrlsText = $post->postImages->pluck('image_path')->implode("\n");
     }
 
     public function clearImages()
@@ -49,27 +50,45 @@ class PostsEdit extends Component
         $this->images = [];
     }
 
+    public function rules()
+    {
+        return [
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:posts,slug,' . $this->postId,
+            'excerpt' => 'nullable|string|max:255',
+            'partners' => 'nullable|string|max:1000',
+            'body' => 'required|string',
+            'status' => 'required|string',
+            'selectedCategories' => 'required|array|min:1|max:3',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'title' => 'título',
+            'slug' => 'URL amigable',
+            'excerpt' => 'extracto',
+            'partners' => 'socios',
+            'body' => 'contenido',
+            'status' => 'estado',
+            'selectedCategories' => 'categorías seleccionadas',
+        ];
+    }
+
     public function update()
     {
         $slugForValidation = Str::slug($this->slug);
 
+        $user = auth()->user();
+
+        if (! $user->hasAnyRole(['Administrador', 'Editor'])) {
+            abort(403, 'No tienes permiso para editar este post.');
+        }
+
+        $this->validate($this->rules(), [], $this->attributes());
+
         try {
-
-            $user = auth()->user();
-
-            if (! $user->hasRole('Administrador')) {
-                abort(403, 'No tienes permiso para actualizar este post.');
-            }
-
-            $this->validate([
-                'title' => 'required|string|max:255',
-                'slug' => 'required|string|max:255|unique:posts,slug,' . $this->postId,
-                'excerpt' => 'nullable|string|max:255',
-                'partners' => 'nullable|string|max:1000',
-                'body' => 'required|string',
-                'status' => 'required|string',
-                'selectedCategories' => 'required|array|min:1',
-            ]);
 
             DB::beginTransaction();
 
@@ -84,6 +103,28 @@ class PostsEdit extends Component
                 'status' => $this->status,
             ]);
             $post->categories()->sync($this->selectedCategories);
+
+            if (!empty($this->imageUrlsText)) {
+                // Separar y limpiar las URLs
+                $urls = preg_split('/[\n,]+/', $this->imageUrlsText); // salto de línea o coma
+                $urls = array_filter(array_map('trim', $urls)); // limpia espacios
+
+                // Filtrar solo las URLs válidas
+                $validUrls = array_filter($urls, fn($url) => filter_var($url, FILTER_VALIDATE_URL));
+
+                // Solo si hay al menos una URL válida, elimina y vuelve a insertar
+                if (!empty($validUrls)) {
+                    $post->postImages()->delete(); // elimina las anteriores
+
+                    $order = 1;
+                    foreach ($validUrls as $url) {
+                        $post->postImages()->create([
+                            'image_path' => $url,
+                            'order' => $order++,
+                        ]);
+                    }
+                }
+            }
 
             DB::commit();
 

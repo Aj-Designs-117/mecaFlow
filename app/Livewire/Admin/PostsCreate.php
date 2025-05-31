@@ -49,28 +49,47 @@ class PostsCreate extends Component
         $this->imageUrls = array_filter(array_map('trim', $urls));
     }
 
-    public function store()
+    public function rules()
     {
-        $slugForValidation = Str::slug($this->slug);
-
-
-        $this->validate([
+        return [
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:posts,slug',
             'excerpt' => 'nullable|string|max:255',
             'body' => 'required|string',
             'partners' => 'nullable|string|max:1000',
             'status' => 'required|string',
-
             'images' => 'nullable|array',
             'images.*' => 'nullable|image|mimes:jpeg,png|max:2048',
-
             'imageUrls' => 'nullable|array',
             'imageUrls.*' => 'string|url',
-
-            'selectedCategories' => 'array|min:1',
+            'selectedCategories' => 'array|min:1|max:3',
             'selectedCategories.*' => 'exists:categories,id',
-        ]);
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'title' => 'título',
+            'slug' => 'URL amigable',
+            'excerpt' => 'extracto',
+            'body' => 'contenido',
+            'partners' => 'socios',
+            'status' => 'estado',
+            'images' => 'imágenes',
+            'images.*' => 'archivo de imagen',
+            'imageUrls' => 'URLs de imágenes',
+            'imageUrls.*' => 'URL de imagen',
+            'selectedCategories' => 'categorías seleccionadas',
+            'selectedCategories.*' => 'categoría',
+        ];
+    }
+
+    public function store()
+    {
+        $slugForValidation = Str::slug($this->slug);
+
+        $this->validate($this->rules(), [], $this->attributes());
 
         if (is_string($this->imageUrls)) {
             $this->imageUrls = array_filter(array_map('trim', explode(',', $this->imageUrls)));
