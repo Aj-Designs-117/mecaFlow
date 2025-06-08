@@ -26,7 +26,7 @@
 
                         <div class="relative w-full" id="multiselect-component">
                             <button type="button" id="dropdownButton"
-                                class="w-full bg-white text-black dark:bg-neutral-700 dark:text-white px-4 py-2 rounded-md shadow flex justify-between items-center">
+                                class="w-full bg-white text-black dark:bg-neutral-700 dark:text-white px-4 py-2 rounded-md shadow flex justify-between items-center cursor-pointer">
                                 <span id="dropdownLabel">Seleccione categorías...</span>
                                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -71,11 +71,13 @@
                 <div class="mt-4">
                     <div class="mb-2">
                         <flux:textarea wire:model="imageUrlsText"
-                            :label="__('Agregar URLs de imágenes (separadas por coma o salto de línea)')" autocomplete="off"
+                            :label="__('Agregar URLs de imágenes (separadas por coma o salto de línea)')"
+                            autocomplete="off"
                             placeholder="https://ejemplo.com/imagen1.jpg, https://ejemplo.com/imagen2.png" />
                     </div>
                     <!-- Subida de archivos -->
-                    <div class="relative bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 min-h-64 flex items-center justify-center">
+                    <div
+                        class="relative bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 min-h-64 flex items-center justify-center">
 
                         <!-- Imagen principal -->
                         @if ($images && count($images) > 0)
@@ -127,7 +129,7 @@
                     imagenes agregue [image_X] y elija el orden en donde se va a visualizar</span>
             </div>
 
-            <div wire:ignore class="mt-4">
+            <div class="mt-4">
                 <flux:label>Contenido</flux:label>
                 <div id="editor" class="h-40 border rounded"></div>
             </div>
@@ -156,3 +158,127 @@
         </form>
     </div>
 </div>
+
+<script>
+    if (typeof window.quillInstance === 'undefined') {
+        window.quillInstance = null;
+    }
+
+    function initQuillAndDropdown() {
+        if(window.quillInstance) {
+            const editorElement = document.querySelector('#editor');
+            if (editorElement) {
+                // Limpiar el contenido HTML del editor
+                editorElement.innerHTML = '';
+                // Eliminar cualquier clase agregada por Quill
+                editorElement.className = '';
+                // Eliminar el contenedor de la toolbar si existe
+                const toolbar = document.querySelector('.ql-toolbar');
+                if (toolbar) toolbar.remove();
+            }
+            window.quillInstance = null;
+        }
+
+        const editor = document.querySelector('#editor');
+        const textarea = document.querySelector('#body');
+
+        if (!editor || !textarea) {
+            console.warn('Editor or textarea not found');
+            return;
+        }
+
+        // Verificar si ya existe una toolbar (puede quedar residual)
+        const existingToolbar = document.querySelector('.ql-toolbar');
+        if (existingToolbar) existingToolbar.remove();
+
+        // Crear nuevo contenedor para la toolbar
+        const toolbarContainer = document.createElement('div');
+        toolbarContainer.id = 'quill-toolbar-container';
+        editor.before(toolbarContainer);
+
+
+        window.quillInstance = new Quill(editor, {
+            theme: 'snow',
+            placeholder: 'Escribe el contenido aquí...',
+            modules: {
+                toolbar: [
+                    [{ 'font': [] }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'align': [] }],
+                    ['code-block'],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            },
+        });
+
+        window.quillInstance.on('text-change', () => {
+            const editor = document.querySelector('.ql-editor');
+            editor.querySelectorAll('p').forEach(p => {
+                if (p.innerHTML.trim() === '<br>' && p !== editor.lastChild) {
+                    p.remove(); // evita dejar <p> vacíos en medio del contenido
+                }
+            });
+
+            const cleanedHtml = quillInstance.root.innerHTML.replace(/<br\s*\/?>/g, '');
+            textarea.value = cleanedHtml;
+            textarea.dispatchEvent(new Event('input'));
+        });
+
+        Livewire.on('quillClear', () => {
+            if (quillInstance) {
+                quillInstance.setText('');
+                textarea.value = '';
+                textarea.dispatchEvent(new Event('input'));
+            }
+        });
+
+        const dropdownButton = document.getElementById("dropdownButton");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const label = document.getElementById("dropdownLabel");
+
+        if (!dropdownButton || !dropdownMenu || !label) return;
+
+        dropdownButton.replaceWith(dropdownButton.cloneNode(true));
+        const newDropdownButton = document.getElementById("dropdownButton");
+        newDropdownButton.addEventListener("click", () => {
+            dropdownMenu.classList.toggle("hidden");
+        });
+
+        const oldCheckboxes = document.querySelectorAll(".category-checkbox");
+        oldCheckboxes.forEach(cb => {
+            cb.replaceWith(cb.cloneNode(true));
+        });
+
+        const checkboxes = document.querySelectorAll(".category-checkbox");
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", updateLabel);
+        });
+
+        function updateLabel() {
+            const selected = Array.from(document.querySelectorAll(".category-checkbox"))
+                .filter(i => i.checked)
+                .map(i => i.parentNode.textContent.trim());
+
+            label.textContent = selected.length ? selected.join(', ') : "Seleccione categorías...";
+        }
+
+        document.addEventListener("click", (event) => {
+            const component = document.getElementById("multiselect-component");
+            if (component && !component.contains(event.target)) {
+                dropdownMenu.classList.add("hidden");
+            }
+        });
+    }
+
+    document.addEventListener('init-quill', () => {
+        initQuillAndDropdown();
+    });
+</script>

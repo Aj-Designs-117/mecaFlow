@@ -147,8 +147,6 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const dropdownButton = document.getElementById("dropdownButton");
@@ -160,44 +158,17 @@
             placeholder: 'Escribe el contenido aquí...',
             modules: {
                 toolbar: [
-                    [{
-                        'font': []
-                    }],
-                    [{
-                        'size': ['small', false, 'large', 'huge']
-                    }],
+                    [{ 'font': [] }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
                     ['bold', 'italic', 'underline', 'strike'],
-                    [{
-                        'color': []
-                    }, {
-                        'background': []
-                    }],
-                    [{
-                        'script': 'sub'
-                    }, {
-                        'script': 'super'
-                    }],
-                    [{
-                        'header': 1
-                    }, {
-                        'header': 2
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    [{
-                        'indent': '-1'
-                    }, {
-                        'indent': '+1'
-                    }],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    [{
-                        'align': []
-                    }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'align': [] }],
+                    ['code-block'],
                     ['link', 'image', 'video'],
                     ['clean']
                 ]

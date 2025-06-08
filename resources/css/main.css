@@ -43,6 +43,27 @@
     max-width: 100%;
 }
 
+.ql-editor .ql-code-block {
+    color: #f5f5f5;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    line-height: 1.4em;
+    tab-size: 4;
+    -moz-tab-size: 4;
+}
+
+.ql-code-block-container {
+    background-color: #2a2a2a ;
+    border-radius: 4px;
+    padding: 10px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+
 body {
     font-family: "Space Grotesk", sans-serif;
     font-optical-sizing: auto;
@@ -164,7 +185,7 @@ input.form-control:focus {
     bottom: 0;
     right: 0;
     left: 0;
-    
+
     background: linear-gradient(to top, #000, #0003);
     border-radius: 10px;
 
@@ -199,7 +220,7 @@ input.form-control:focus {
     height: auto;
 }
 
-.card-img-avatar{
+.card-img-avatar {
     width: 30px;
     height: 30px;
 }

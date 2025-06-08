@@ -23,6 +23,7 @@ class PostsCreate extends Component
     public function render()
     {
         $categories = Category::all();
+        $this->dispatch('init-quill');
         return view('livewire.admin.posts-create', compact('categories'));
     }
 
