@@ -64,6 +64,20 @@
     overflow-x: auto;
 }
 
+blockquote {
+  margin: 1rem 0 !important;
+  padding: 0.5em 1em !important;
+  border-left: 4px solid #ccc;
+  background-color: #f9f9f9;
+  font-style: italic;
+  color: #555;
+  white-space: normal;
+  word-break: break-word; 
+  overflow-wrap: break-word; 
+  line-height: 1.5; 
+  font-size: 1em;
+}
+
 body {
     font-family: "Space Grotesk", sans-serif;
     font-optical-sizing: auto;

@@ -168,7 +168,7 @@
                     [{ 'indent': '-1'}, { 'indent': '+1' }],
                     [{ 'direction': 'rtl' }],
                     [{ 'align': [] }],
-                    ['code-block'],
+                    ['code-block', 'blockquote'],
                     ['link', 'image', 'video'],
                     ['clean']
                 ]
