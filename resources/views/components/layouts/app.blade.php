@@ -10,7 +10,7 @@
     </flux:main>
 
     @stack('js')
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('livewire:init', () => {
             const toastrConfig = {

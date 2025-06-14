@@ -47,7 +47,15 @@
         </div>
         @auth
             @role('Administrador')
-                <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700 z-10">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold">Lista de auditoria</h1>
+                    <button wire:click="confirmClearAudit"
+                        class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer">
+                        🗑️ Borrar
+                    </button>
+                </div>
+                <div
+                    class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700 z-10">
                     <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
                     <div class="relative overflow-x-auto z-10">
                         @if ($audits->count())
@@ -87,3 +95,24 @@
         @endauth
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('confirm-clear-audit', () => {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Esta acción eliminará todos los registros de auditoría!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.call('destroyAudits');
+                }
+            });
+        });
+    });
+</script>

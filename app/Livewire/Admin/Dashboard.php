@@ -13,7 +13,13 @@ class Dashboard extends Component
 {
     use WithPagination;
 
-    public $totalPosts, $recentViews ,$drafts, $public, $categories, $users;
+    public $totalPosts, $recentViews, $drafts, $public, $categories, $users;
+
+    public function render()
+    {
+        $audits = Audit::with(['post', 'user'])->latest()->paginate(10);
+        return view('livewire.admin.dashboard', compact('audits'));
+    }
 
     public function mount()
     {
@@ -25,9 +31,14 @@ class Dashboard extends Component
         $this->recentViews = Post::sum('views');
     }
 
-    public function render()
-    {   
-        $audits = Audit::with(['post', 'user'])->latest()->paginate(10);
-        return view('livewire.admin.dashboard', compact('audits'));
+    public function confirmClearAudit()
+    {
+        $this->dispatch('confirm-clear-audit');
+    }
+
+    public function destroyAudits()
+    {
+        Audit::truncate();
+        $this->dispatch('success', ['message' => 'La auditoria ha sido eliminada']);
     }
 }
