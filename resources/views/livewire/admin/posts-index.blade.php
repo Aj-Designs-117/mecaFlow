@@ -8,7 +8,7 @@
                     autofocus autocomplete="Buscar" placeholder="Ingrese el nombre o correo electronico" />
 
             </div>
-            <div class="relative overflow-x-auto z-10">
+            <div class="relative overflow-x-auto">
                 @if ($posts->count())
                     <table class="w-full table-auto text-left border-collapse">
                         <thead>
@@ -57,16 +57,17 @@
                             @endforeach
                         </tbody>
                     </table>
-
-                    <div class="mt-4 relative z-10">
-                        {{ $posts->links() }}
-                    </div>
                 @else
                     <div class="p-6 border-t">
                         <strong class="font-bold">{{ __('No hay registros') }}</strong>
                     </div>
                 @endif
             </div>
+            @if ($posts->hasPages())
+                <div class="mt-4 relative z-10">
+                    {{ $posts->links() }}
+                </div>
+            @endif
         </div>
     </div>
 </div>
