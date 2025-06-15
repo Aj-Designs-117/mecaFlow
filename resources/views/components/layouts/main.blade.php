@@ -43,12 +43,12 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('home') }}">INICIO</a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link text-white" href="#">SOBRE NOSOTROS</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">CONTACTO</a>
-                    </li>
+                    </li> --}}
                 </ul>
 
                 <div class="d-flex align-items-center gap-2">
@@ -112,12 +112,12 @@
                         <li class="mb-2">
                             <a href="{{ route('home') }}" class="text-decoration-none text-light">Inicio</a>
                         </li>
-                        <li class="mb-2">
+                        {{-- <li class="mb-2">
                             <a href="#" class="text-white text-decoration-none">Sobre Nosotros</a>
                         </li>
                         <li class="mb-2">
                             <a href="#" class="text-white text-decoration-none">Contacto</a>
-                        </li>
+                        </li> --}}
                         </li>
                     </ul>
                 </div>
