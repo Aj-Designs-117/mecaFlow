@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\Models\Activity;
 
 class CategoriesCreate extends Component
 {
@@ -26,7 +27,7 @@ class CategoriesCreate extends Component
 
     public function store()
     {
-        try{
+        try {
             $this->validate([
                 'name' => 'required|string|max:255|unique:categories',
                 'slug' => 'required|string|max:255|unique:categories'
@@ -52,9 +53,9 @@ class CategoriesCreate extends Component
             $this->resetFieldsView();
             $this->dispatch('categoryCreated');
             $this->dispatch('success', ['message' => 'Se ha guardado correctamente']);
-        }catch(\Exception $e){
+        } catch (\Throwable $e) {
             DB::rollBack();
-            
+
             Log::error('Error al crear categoria', [
                 'error' => $e->getMessage(),
                 'inputs' => [
@@ -64,6 +65,20 @@ class CategoriesCreate extends Component
                 'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
+
+            activity()
+                ->causedBy(Auth::user())
+                ->withProperties([
+                    'inputs' => [
+                        'name' => $this->name,
+                        'slug' => $this->slug,
+                    ],
+                    'error' => $e->getMessage(),
+                    'modified_by' => Auth::user()->id,
+                    'ip' => request()->ip()
+                ])
+                ->log('Error al crear categoria');
+
             $this->resetFieldsView();
             $this->dispatch('error', ['message' => 'Algo va mal al crear un nueva categoria']);
         }

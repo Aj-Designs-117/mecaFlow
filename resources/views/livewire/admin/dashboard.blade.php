@@ -58,23 +58,49 @@
                     class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700 z-10">
                     <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
                     <div class="relative overflow-x-auto z-10">
-                        @if ($audits->count())
+                        @if ($logs->count())
                             <table class="w-full table-auto text-left border-collapse">
                                 <thead>
                                     <tr class="bg-gray-200 text-gray-700 uppercase text-sm text-center">
                                         <th class="px-4 py-2">Fecha</th>
-                                        <th class="px-4 py-2">Post</th>
-                                        <th class="px-4 py-2">Usuario</th>
+                                        <th class="px-4 py-2">ID MOD</th>
+                                        <th class="px-4 py-2">Modelo</th>
                                         <th class="px-4 py-2">Acción</th>
+                                        <th class="px-4 py-2">Usuarios</th>
+                                        <th class="px-4 py-2">Detalles</th>
+                                        {{-- <th class="px-4 py-2">Linea Error</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm">
-                                    @foreach ($audits as $audit)
+                                    @foreach ($logs as $log)
                                         <tr class="text-center">
-                                            <td class="px-4 py-2 font-bold">{{ $audit->created_at->format('d/m/Y H:i') }}</td>
-                                            <td class="px-4 py-2">{{ $audit->post->title }}</td>
-                                            <td class="px-4 py-2">{{ $audit->user->name ?? 'N/A' }}</td>
-                                            <td class="px-4 py-2">{{ $audit->action }}</td>
+                                            <td class="px-4 py-2 font-bold border">{{ $log->created_at->format('d-m-Y H:i') }}</td>
+                                            <td class="px-4 py-2 border">{{ $log->subject_id }}</td>
+                                            <td class="px-4 py-2 border">{{ class_basename($log->subject_type) }}</td>
+                                            <td class="px-4 py-2 border">{{ ucfirst($log->description) }}</td>
+                                            <td class="px-4 py-2 border">{{ $log->causer?->name ?? '—' }}</td>
+                                            <td class="px-4 py-2 border">
+                                                @if (isset($log->properties['register_id']))
+                                                    <div><strong>id_registro:</strong> {{ $log->properties['register_id'] }}</div>
+                                                @endif
+                                                @if (isset($log->properties['error']))
+                                                    <div><strong>Error:</strong> {{ $log->properties['error'] }}</div>
+                                                @else
+                                                    <span class="bg-green-200 text-green-800 px-2 py-1 rounded text-xs font-semibold">Sin detalle</span>
+                                                @endif
+                                                @if (isset($log->properties['line']))
+                                                    <div class="my-1">
+                                                        <strong>Ip: </strong>
+                                                        <span class="bg-sky-200 text-sky-800 px-2 py-1 rounded text-xs font-semibold">{{ $log->properties['ip'] }}</span>
+                                                    </div>
+                                                @endif
+                                                @if (isset($log->properties['line']))
+                                                    <div class="my-1">
+                                                        <strong>Linea error: </strong>
+                                                        <span class="bg-red-200 text-red-800 px-2 py-1 rounded text-xs font-semibold">{{ $log->properties['line'] }}</span>
+                                                    </div>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -85,9 +111,9 @@
                             </div>
                         @endif
                     </div>
-                    @if ($audits->hasPages())
+                    @if ($logs->hasPages())
                         <div class="mt-4 w-full">
-                            {{ $audits->links() }}
+                            {{ $logs->links() }}
                         </div>
                     @endif
                 </div>

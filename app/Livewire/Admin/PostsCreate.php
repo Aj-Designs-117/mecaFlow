@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Cloudinary\Cloudinary;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Models\Activity;
 use Livewire\Component;
 
 class PostsCreate extends Component
@@ -149,7 +150,7 @@ class PostsCreate extends Component
             $this->resetFieldsView();
             $this->dispatch('quillClear');
             $this->dispatch('success', ['message' => 'Se ha guardado correctamente']);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
 
             Log::error('Error al crear post', [
@@ -165,6 +166,24 @@ class PostsCreate extends Component
                 'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
+
+            activity('errors')
+                ->causedBy(auth()->user())
+                ->withProperties([
+                    'register_id' => $this->postId,
+                    'error' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'ip' => request()->ip(),
+                    'inputs' => [
+                        'title' => $this->title,
+                        'slug' => $this->slug,
+                        'partners' => $this->partners,
+                        'images' => count($this->images ?? []),
+                        'status' => $this->status,
+                    ],
+                ])
+                ->log('Error al crear un post');
 
             $this->resetFieldsView();
             $this->dispatch('error', ['message' => 'Algo va mal al crear un nuevo post']);

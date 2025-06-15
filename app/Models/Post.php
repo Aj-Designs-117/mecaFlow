@@ -3,13 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Post extends Model
 {
+    use LogsActivity;
+
     protected $fillable = ['user_id', 'title', 'slug', 'excerpt', 'body', 'partners', 'status'];
-    protected $casts = [
-        'partners' => 'array',
-    ];
+    protected $casts = ['partners' => 'array'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('post')
+            ->dontSubmitEmptyLogs();
+    }
 
     public function user()
     {
@@ -24,41 +35,5 @@ class Post extends Model
     public function postImages()
     {
         return $this->hasMany(PostImage::class);
-    }
-
-    protected static function booted()
-    {
-        static::created(function ($post) {
-            Audit::create([
-                'post_id' => $post->id,
-                'action' => 'CREATED',
-                'new_title' => $post->title,
-                'new_date' => $post->created_at,
-                'user_id' => auth()->id(),
-            ]);
-        });
-
-        static::updated(function ($post) {
-            Audit::create([
-                'post_id' => $post->id,
-                'action' => 'UPDATED',
-                'old_title' => $post->getOriginal('title'),
-                'new_title' => $post->title,
-                'old_date' => $post->getOriginal('updated_at'),
-                'new_date' => $post->updated_at,
-                'user_id' => auth()->id(),
-            ]);
-        });
-
-
-        static::deleted(function ($post) {
-            Audit::create([
-                'post_id' => $post->id,
-                'action' => 'DELETED',
-                'old_title' => $post->title,
-                'old_date' => $post->updated_at,
-                'user_id' => auth()->id(),
-            ]);
-        });
     }
 }

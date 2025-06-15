@@ -149,8 +149,19 @@ class PostsEdit extends Component
                 'ip' => request()->ip()
             ]);
 
+            activity('errors')
+                ->causedBy(auth()->user())
+                ->withProperties([
+                    'register_id' => $this->postId,
+                    'error' => $authEx->getMessage(),
+                    'file' => $authEx->getFile(),
+                    'line' => $authEx->getLine(),
+                    'ip' => request()->ip(),
+                ])
+                ->log('Intento no autorizado de actualizar post');
+
             $this->dispatch('error', ['message' => 'Intento actualizar sin permiso']);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
 
             Log::error('Error al crear post', [
@@ -165,6 +176,25 @@ class PostsEdit extends Component
                 'modified_by' => Auth::user()->id,
                 'ip' => request()->ip()
             ]);
+
+            activity('errors')
+                ->causedBy(auth()->user())
+                ->withProperties([
+                    'register_id' => $this->postId,
+                    'error' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'ip' => request()->ip(),
+                    'inputs' => [
+                        'title' => $this->title,
+                        'slug' => $this->slug,
+                        'partners' => $this->partners,
+                        'images' => count($this->images ?? []),
+                        'status' => $this->status,
+                    ],
+                ])
+                ->log('Error al actualizar post');
+
             $this->dispatch('error', ['message' => 'Algo va mal al actualizar un nuevo post']);
         }
     }
