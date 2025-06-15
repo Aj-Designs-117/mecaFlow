@@ -3,7 +3,31 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Básico -->
+    <meta charset="UTF-8">
+    <meta name="description" content="MecaLink: Blog de ingeniería donde encontrarás artículos, análisis y recursos sobre mecánica, robótica, diseño CAD, automatización y más.">
+    <meta name="keywords" content="ingeniería mecánica, MecaLink, blog de ingeniería, CAD, robótica, automatización, diseño mecánico, análisis estructural, mecatrónica, control, simulaciones">
+    <meta name="author" content="Alan Jafet">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://mecaflow-main-wxovkm.laravel.cloud/">
+
+    <!-- Open Graph para redes sociales (Facebook, LinkedIn, etc.) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mecaflow-main-wxovkm.laravel.cloud/">
+    <meta property="og:title" content="MecaLink | Blog de Ingeniería Mecánica y Robótica">
+    <meta property="og:description" content="Explora MecaLink, el blog donde la ingeniería cobra vida: contenidos sobre mecánica, automatización, CAD, robótica y más.">
+    <meta property="og:image" content="{{ asset('images/logo-meca-192x192.png') }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://mecaflow-main-wxovkm.laravel.cloud/">
+    <meta name="twitter:title" content="MecaLink | Blog de Ingeniería Mecánica y Robótica">
+    <meta name="twitter:description" content="Explora MecaLink, el blog donde la ingeniería cobra vida: contenidos sobre mecánica, automatización, CAD, robótica y más.">
+    <meta name="twitter:image" content="{{ asset('images/logo-meca-192x192.png') }}">
+    
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <title>{{ setting('site_title') }}</title>
 
