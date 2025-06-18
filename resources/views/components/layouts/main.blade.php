@@ -158,7 +158,7 @@
                         <p class="mb-0">Creado por <strong>{{ setting('site_author') }}</strong></p>
                     </div>
                     <div class="col-12 col-md-4">
-                        <a href="#" class="text-white text-decoration-none">Términos y condiciones</a>
+                        <a href="{{ route('terms') }}" class="text-white text-decoration-none">Términos y condiciones</a>
                     </div>
                 </div>
             </div>

@@ -10,6 +10,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::view('/meca/{slug}', 'blog.meca.show')->name('blog.meca.show');
+Route::view('/terms', 'terms')->name('terms');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
