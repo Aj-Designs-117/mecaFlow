@@ -46,11 +46,7 @@ class PostsIndex extends Component
     public function destroy($id)
     {
         $user = auth()->user();
-
-        if (! $user->hasRole(['Administrador'])) {
-            abort(403, 'No tienes permiso para eliminar posts.');
-        }
-
+        
         try {
             DB::beginTransaction();
 
