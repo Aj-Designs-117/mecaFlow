@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
@@ -34,6 +36,13 @@ class User extends Authenticatable
             ->logOnlyDirty()
             ->useLogName('user')
             ->dontSubmitEmptyLogs();
+    }
+
+    public static function tapActivity(Activity $activity, string $eventName): void
+    {
+        $activity->properties = $activity->properties->merge([
+            'ip' => Request::ip(),
+        ]);
     }
 
     /**

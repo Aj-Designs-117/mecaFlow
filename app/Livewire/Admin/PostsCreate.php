@@ -185,7 +185,6 @@ class PostsCreate extends Component
                 ])
                 ->log('Error al crear un post');
 
-            $this->resetFieldsView();
             $this->dispatch('error', ['message' => 'Algo va mal al crear un nuevo post']);
         }
     }

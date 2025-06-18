@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
+use Illuminate\Support\Facades\Request;
 
 class Post extends Model
 {
@@ -20,6 +22,13 @@ class Post extends Model
             ->logOnlyDirty()
             ->useLogName('post')
             ->dontSubmitEmptyLogs();
+    }
+
+    public static function tapActivity(Activity $activity, string $eventName): void
+    {
+        $activity->properties = $activity->properties->merge([
+            'ip' => Request::ip(),
+        ]);
     }
 
     public function user()

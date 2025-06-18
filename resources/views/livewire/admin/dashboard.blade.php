@@ -68,7 +68,7 @@
                                         <th class="px-4 py-2">Acción</th>
                                         <th class="px-4 py-2">Usuarios</th>
                                         <th class="px-4 py-2">Detalles</th>
-                                        {{-- <th class="px-4 py-2">Linea Error</th> --}}
+                                        <th class="px-4 py-2">Ip</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm">
@@ -98,6 +98,13 @@
                                                     <div class="my-1">
                                                         <strong>Linea error: </strong>
                                                         <span class="bg-red-200 text-red-800 px-2 py-1 rounded text-xs font-semibold">{{ $log->properties['line'] }}</span>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                            <td class="px-4 py-2 border">
+                                                 @if (isset($log->properties['ip']))
+                                                    <div class="my-1">
+                                                        <span class="bg-red-200 text-red-800 px-2 py-1 rounded text-xs font-semibold">{{ $log->properties['ip'] }}</span>
                                                     </div>
                                                 @endif
                                             </td>
