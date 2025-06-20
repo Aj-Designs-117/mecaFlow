@@ -5,11 +5,12 @@ namespace App\Livewire\Blog;
 use App\Models\Category;
 use App\Models\Post;
 use Carbon\Carbon;
+use Spatie\Activitylog\Facades\Activity;
 use Livewire\Component;
 
 class MecaItem extends Component
 {
-    public $post = '';
+    public $post, $categories, $formattedDate, $formattedBody;
 
     public function render()
     {
@@ -28,8 +29,14 @@ class MecaItem extends Component
         ])->where('slug', $slug)->firstOrFail();
 
         $sessionKey = 'viewed_post_' . $this->post->id;
+
         if (!session()->has($sessionKey)) {
+            activity()->disableLogging(); // Desactiva logging temporalmente
+
             $this->post->increment('views');
+
+            activity()->enableLogging(); // Lo vuelve a activar
+
             session()->put($sessionKey, true);
         }
 
