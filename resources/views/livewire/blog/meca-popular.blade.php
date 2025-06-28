@@ -2,6 +2,7 @@
     <div class="card-body">
         <h6 class="card-title fw-semibold text-muted mb-3">Populares de la semana</h6>
         <!-- Item -->
+        @if($popularPosts->isNotEmpty())
         @foreach ($popularPosts as $post)
             <a href="{{ route('blog.meca.show', $post->slug) }}" class="text-decoration-none text-dark">
                 <div class="d-flex mb-3 p-2 rounded align-items-center hover-card">
@@ -23,5 +24,8 @@
                 </div>
             </a>
         @endforeach
+        @else
+         <p class="text-muted text-center">No hay publicaciones populares de la semana.</p>
+        @endif
     </div>
 </div>

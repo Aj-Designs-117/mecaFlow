@@ -14,7 +14,7 @@ class MecaPopular extends Component
             ->where('status', 'Publicado')
             ->where('created_at', '>=', Carbon::now()->subDays(7))
             ->orderByDesc('views')
-            ->take(5)
+            ->take(10)
             ->get();
 
         return view('livewire.blog.meca-popular', compact('popularPosts'));
