@@ -7,8 +7,10 @@
 
     <!-- SEO Básico -->
     <meta charset="UTF-8">
-    <meta name="description" content="MecaLink: Blog de ingeniería donde encontrarás artículos, análisis y recursos sobre mecánica, robótica, diseño CAD, automatización y más.">
-    <meta name="keywords" content="ingeniería mecánica, MecaLink, blog de ingeniería, CAD, robótica, automatización, diseño mecánico, análisis estructural, mecatrónica, control, simulaciones">
+    <meta name="description"
+        content="MecaLink: Blog de ingeniería donde encontrarás artículos, análisis y recursos sobre mecánica, robótica, diseño CAD, automatización y más.">
+    <meta name="keywords"
+        content="ingeniería mecánica, MecaLink, blog de ingeniería, CAD, robótica, automatización, diseño mecánico, análisis estructural, mecatrónica, control, simulaciones">
     <meta name="author" content="Alan Jafet">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://mecaflow-main-wxovkm.laravel.cloud/">
@@ -17,19 +19,34 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mecaflow-main-wxovkm.laravel.cloud/">
     <meta property="og:title" content="MecaLink | Blog de Ingeniería Mecánica y Robótica">
-    <meta property="og:description" content="Explora MecaLink, el blog donde la ingeniería cobra vida: contenidos sobre mecánica, automatización, CAD, robótica y más.">
+    <meta property="og:description"
+        content="Explora MecaLink, el blog donde la ingeniería cobra vida: contenidos sobre mecánica, automatización, CAD, robótica y más.">
     <meta property="og:image" content="{{ asset('images/logo-meca-192x192.png') }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://mecaflow-main-wxovkm.laravel.cloud/">
     <meta name="twitter:title" content="MecaLink | Blog de Ingeniería Mecánica y Robótica">
-    <meta name="twitter:description" content="Explora MecaLink, el blog donde la ingeniería cobra vida: contenidos sobre mecánica, automatización, CAD, robótica y más.">
+    <meta name="twitter:description"
+        content="Explora MecaLink, el blog donde la ingeniería cobra vida: contenidos sobre mecánica, automatización, CAD, robótica y más.">
     <meta name="twitter:image" content="{{ asset('images/logo-meca-192x192.png') }}">
-    
+
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <title>{{ setting('site_title') }}</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4M3E22QC4W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-4M3E22QC4W');
+    </script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous" />
@@ -37,7 +54,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
-    
+
     @vite(['resources/css/main.css'])
 </head>
 
@@ -158,7 +175,8 @@
                         <p class="mb-0">Creado por <strong>{{ setting('site_author') }}</strong></p>
                     </div>
                     <div class="col-12 col-md-4">
-                        <a href="{{ route('terms') }}" class="text-white text-decoration-none">Términos y condiciones</a>
+                        <a href="{{ route('terms') }}" class="text-white text-decoration-none">Términos y
+                            condiciones</a>
                     </div>
                 </div>
             </div>
