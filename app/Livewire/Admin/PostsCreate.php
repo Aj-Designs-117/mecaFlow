@@ -170,7 +170,6 @@ class PostsCreate extends Component
             activity('errors')
                 ->causedBy(auth()->user())
                 ->withProperties([
-                    'register_id' => $this->postId,
                     'error' => $e->getMessage(),
                     'file' => $e->getFile(),
                     'line' => $e->getLine(),
