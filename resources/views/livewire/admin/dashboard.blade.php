@@ -76,7 +76,7 @@
                                         <tr class="text-center">
                                             <td class="px-4 py-2 font-bold border">{{ $log->created_at->format('d-m-Y H:i') }}</td>
                                             <td class="px-4 py-2 border">{{ $log->subject_id }}</td>
-                                            <td class="px-4 py-2 border">{{ class_basename($log->subject_type) }}</td>
+                                            <td class="px-4 py-2 border">{{ $log->log_name }}</td>
                                             <td class="px-4 py-2 border">{{ ucfirst($log->description) }}</td>
                                             <td class="px-4 py-2 border">{{ $log->causer?->name ?? '—' }}</td>
                                             <td class="px-4 py-2 border">
